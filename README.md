@@ -22,6 +22,9 @@ The following documentation will guide you through the one-click creation of a n
   <a href="https://twitter.com/intent/follow?screen_name=medusajs">
     <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
   </a>
+  <a href="https://heroku.com/deploy?template=https://github.com/gianmarcomurru/heroku-starter-medusa">
+    <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
+  </a>
 </p>
 
 - [Setup](#setup)
