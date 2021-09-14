@@ -8,6 +8,9 @@
 </h1>
 <p align="center">
 The following documentation will guide you through the one-click creation of a new <a href="https://github.com/medusajs/medusa">Medusa</a> project hosted on Heroku. Follow the steps below to get ready.
+<a href="https://heroku.com/deploy?template=https://github.com/gianmarcomurru/heroku-starter-medusa">
+  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
+</a>
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -21,9 +24,6 @@ The following documentation will guide you through the one-click creation of a n
   </a>
   <a href="https://twitter.com/intent/follow?screen_name=medusajs">
     <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-  <a href="https://heroku.com/deploy?template=https://github.com/gianmarcomurru/heroku-starter-medusa">
-    <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
   </a>
 </p>
 
