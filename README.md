@@ -1,8 +1,3 @@
----
-title: 'Deploy Medusa App on Heroku'
-disqus: hackmd
----
-
 <p align="center">
   <a href="https://www.medusa-commerce.com">
     <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/129161578-19b83dc8-fac5-4520-bd48-53cba676edd2.png" width="100" />
@@ -29,9 +24,6 @@ The following documentation will guide you through the one-click creation of a n
   </a>
 </p>
 
-## Table of Contents
-
-[TOC]
 
 # Setup
 
