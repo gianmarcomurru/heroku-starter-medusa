@@ -24,6 +24,23 @@ The following documentation will guide you through the one-click creation of a n
   </a>
 </p>
 
+- [Setup](#setup)
+  * [1. Install Heroku](#1-install-heroku)
+  * [2. Login to Heroku from your terminal](#2-login-to-heroku-from-your-terminal)
+  * [3. Install MedusaCLI](#3-install-medusacli)
+  * [4. Create an Heroku App](#4-create-an-heroku-app)
+  * [5. Install Postgresql and Redis on Heroku](#5-install-postgresql-and-redis-on-heroku)
+      - [Postgresql](#postgresql)
+      - [RedisToGo](#redistogo)
+  * [6. Configure the environment variables on Heroku](#6-configure-the-environment-variables-on-heroku)
+      - [Config the Redis URL](#config-the-redis-url)
+  * [7. Configure Medusa](#7-configure-medusa)
+      - [Update `medusa-config.js`](#update--medusa-configjs-)
+      - [Update `package.json`](#update--packagejson-)
+  * [8. Build the project](#8-build-the-project)
+  * [9. Push changes to Heroku](#9-push-changes-to-heroku)
+  * [10. Check Heroku build logs](#10-check-heroku-build-logs)
+  * [Appendix and FAQ](#appendix-and-faq)
 
 # Setup
 
@@ -57,7 +74,7 @@ heroku login
 
 
 ```shell=
-git clone heroku-starter-medusa
+git clone https://github.com/gianmarcomurru/heroku-starter-medusa.git
 cd heroku-starter-medusa
 ```
 
@@ -82,9 +99,7 @@ Install Postgresql using this command
 heroku addons:create heroku-postgresql:hobby-dev
 ```
 #### RedisToGo
-:::danger
-⚠️ Heroku requires you to add a payment method before installing RedisToGO
-:::
+> :warning: Heroku requires you to add a payment method before installing RedisToGO
 ```shell=
 heroku addons:create redistogo:nano
 ```
@@ -204,8 +219,7 @@ Visit [docs.medusa-commerce.com](https://docs.medusa-comerce.com) for further gu
 </p>
 
 
-:::info
-**Find this document incomplete?** Leave a comment!
-:::
+
+> **Find this document incomplete?** Leave a comment!
 
 ###### tags: `MedusaJS` `Heroku` `Documentation`
