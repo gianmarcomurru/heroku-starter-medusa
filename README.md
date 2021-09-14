@@ -33,14 +33,11 @@ The following documentation will guide you through the one-click creation of a n
       - [Postgresql](#postgresql)
       - [RedisToGo](#redistogo)
   * [6. Configure the environment variables on Heroku](#6-configure-the-environment-variables-on-heroku)
-      - [Config the Redis URL](#config-the-redis-url)
-  * [7. Configure Medusa](#7-configure-medusa)
-      - [Update `medusa-config.js`](#update--medusa-configjs-)
-      - [Update `package.json`](#update--packagejson-)
-  * [8. Build the project](#8-build-the-project)
-  * [9. Push changes to Heroku](#9-push-changes-to-heroku)
-  * [10. Check Heroku build logs](#10-check-heroku-build-logs)
+  * [7. Build the project](#7-build-the-project)
+  * [8. Push changes to Heroku](#8-push-changes-to-heroku)
+  * [9. Check Heroku build logs](#9-check-heroku-build-logs)
   * [Appendix and FAQ](#appendix-and-faq)
+          + [tags: `MedusaJS` `Heroku` `Documentation`](#tags---medusajs---heroku---documentation-)
 
 # Setup
 
@@ -116,73 +113,13 @@ heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
 
-#### Config the Redis URL
-
-Get the current Redis URL:
-
-```shell=
-heroku config:get REDISTOGO_URL
-```
-
-You should get something like:
-```shell=
-redis://redistogo:c55451f6a1966969b25b5e537135b73f@sole.redistogo.com:9660/
-```
-
-Remove the username from the Redis URL:
-redis://~~redistogo~~:c55451f6a1966969b25b5e537135b73f@sole.redistogo.com:9660/
-
-```shell=
-heroku config:set REDISTOGO_URL=redis://:c55451f6a1966969b25b5e537135b73f@sole.redistogo.com:9660/
-```
-## 7. Configure Medusa
-
-#### Update `medusa-config.js`
-
-Set `REDIS_URL` to get `REDISTOGO_URL` environment variable
-```javascript=
-// Medusa uses Redis, so this needs configuration as well
-const REDIS_URL = process.env.REDISTOGO_URL || "redis://localhost:6379";
-```
-
-Set `module.export` like this:
-```javascript=
-module.exports = {
-  projectConfig: {
-    redis_url: REDIS_URL,
-    database_url: DATABASE_URL,
-    database_type: "postgres",
-    store_cors: STORE_CORS,
-    admin_cors: ADMIN_CORS,
-    database_extra: {
-            ssl: { rejectUnauthorized: false },
-    }
-  },
-  plugins,
-};
-```
-
-#### Update `package.json`
-
-set `.scripts` like this:
-
-```json=
-"scripts": {
-    "serve": "medusa start",
-    "start": "medusa develop",
-    "heroku-postbuild": "medusa migrations run",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "build": "babel src -d dist --extensions \".ts,.js\""
-  }
-```
-
-## 8. Build the project
+## 7. Build the project
 
 ```shell=
 npm install cross-env babel-preset-medusa-package
 ```
 
-## 9. Push changes to Heroku
+## 8. Push changes to Heroku
 ```shell=
 git add .
 git commit -m "Deploy Medusa App on Heroku"
@@ -190,7 +127,7 @@ heroku buildpacks:set heroku/nodejs
 git push heroku HEAD:master
 ```
 
-## 10. Check Heroku build logs
+## 9. Check Heroku build logs
 
 ```shell=
 heroku logs -n 500000 --remote heroku --tail
