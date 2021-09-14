@@ -36,8 +36,6 @@ The following documentation will guide you through the one-click creation of a n
   * [7. Build the project](#7-build-the-project)
   * [8. Push changes to Heroku](#8-push-changes-to-heroku)
   * [9. Check Heroku build logs](#9-check-heroku-build-logs)
-  * [Appendix and FAQ](#appendix-and-faq)
-          + [tags: `MedusaJS` `Heroku` `Documentation`](#tags---medusajs---heroku---documentation-)
 
 # Setup
 
@@ -133,7 +131,7 @@ git push heroku HEAD:master
 heroku logs -n 500000 --remote heroku --tail
 ```
 
-## Appendix and FAQ
+---
 
 Visit [docs.medusa-commerce.com](https://docs.medusa-comerce.com) for further guides.
 
@@ -154,9 +152,5 @@ Visit [docs.medusa-commerce.com](https://docs.medusa-comerce.com) for further gu
     Docs
   </a>
 </p>
-
-
-
-> **Find this document incomplete?** Leave a comment!
 
 ###### tags: `MedusaJS` `Heroku` `Documentation`
