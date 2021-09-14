@@ -1,13 +1,18 @@
+---
+title: 'Deploy Medusa App on Heroku'
+disqus: hackmd
+---
+
 <p align="center">
   <a href="https://www.medusa-commerce.com">
     <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/129161578-19b83dc8-fac5-4520-bd48-53cba676edd2.png" width="100" />
   </a>
 </p>
 <h1 align="center">
-  Medusa Starter Default
+  Deploy Medusa App on Heroku
 </h1>
 <p align="center">
-This repo provides the skeleton to get you started with using <a href="https://github.com/medusajs/medusa">Medusa</a>. Follow the steps below to get ready.
+The following documentation will guide you through the one-click creation of a new <a href="https://github.com/medusajs/medusa">Medusa</a> project hosted on Heroku. Follow the steps below to get ready.
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -24,44 +29,167 @@ This repo provides the skeleton to get you started with using <a href="https://g
   </a>
 </p>
 
-## Prerequisites
-This starter has minimal prerequisites and most of these will usually already be installed on your computer.
+## Table of Contents
 
-- [Install Node.js](https://nodejs.org/en/download/)
-- [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [Install SQLite](https://www.sqlite.org/download.html)
+[TOC]
 
-## Setting up your store
-- Install the Medusa CLI
-  ```
-  npm install -g @medusajs/medusa
-  yarn global add @medusajs/medusa
-  ```
-- Create a new Medusa project
-  ```
-  medusa new my-medusa-store
-  ```
-- Run your project
-  ```
-  cd my-medusa-store
-  medusa develop
-  ```
+# Setup
 
-Your local Medusa server is now running on port **9000**. 
+## 1. Install Heroku
 
-## Try it out
-
+**Ubuntu**
+```shell=
+sudo snap install --classic heroku
 ```
-curl -X GET localhost:9000/store/products | python -m json.tool
+**MacOS**
+```shell=
+brew tap heroku/brew && brew install heroku
+```
+**Windows**
+
+Download the appropriate installer for your Windows installation:
+
+[64-bit installer](https://cli-assets.heroku.com/heroku-x64.exe)
+[32-bit installer](https://cli-assets.heroku.com/heroku-x86.exe)
+
+## 2. Login to Heroku from your terminal
+
+
+```shell=
+heroku login
+```
+> Follow the instructions on your terminal
+
+
+## 3. Install MedusaCLI
+
+
+```shell=
+git clone heroku-starter-medusa
+cd heroku-starter-medusa
 ```
 
-After the seed script has run you will have the following things in you database:
 
-- a User with the email: admin@medusa-test.com and password: supersecret
-- a Region called Default Region with the countries GB, DE, DK, SE, FR, ES, IT
-- a Shipping Option called Standard Shipping which costs 10 EUR
-- a Product called Cool Test Product with 4 Product Variants that all cost 19.50 EUR
+## 4. Create an Heroku App
 
+
+```shell=
+HEROKU_PROJECT=medusa-$(uuid | cut -d "-" -f1)
+heroku create $HEROKU_PROJECT
+heroku git:remote -a $HEROKU_PROJECT
+```
+
+
+
+## 5. Install Postgresql and Redis on Heroku
+
+#### Postgresql
+Install Postgresql using this command
+
+```shell=
+heroku addons:create heroku-postgresql:hobby-dev
+```
+#### RedisToGo
+:::danger
+⚠️ Heroku requires you to add a payment method before installing RedisToGO
+:::
+```shell=
+heroku addons:create redistogo:nano
+```
+
+
+## 6. Configure the environment variables on Heroku
+
+
+```shell=
+heroku config:set NODE_ENV=production
+heroku config:set MY_HEROKU_URL=$(heroku info -s | grep web_url | cut -d= -f2)
+heroku config:set JWT_SECRET=your-super-secret
+heroku config:set COOKIE_SECRET=your-super-secret-pt2
+heroku config:set NPM_CONFIG_PRODUCTION=false
+```
+
+#### Config the Redis URL
+
+Get the current Redis URL:
+
+```shell=
+heroku config:get REDISTOGO_URL
+```
+
+You should get something like:
+```shell=
+redis://redistogo:c55451f6a1966969b25b5e537135b73f@sole.redistogo.com:9660/
+```
+
+Remove the username from the Redis URL:
+redis://~~redistogo~~:c55451f6a1966969b25b5e537135b73f@sole.redistogo.com:9660/
+
+```shell=
+heroku config:set REDISTOGO_URL=redis://:c55451f6a1966969b25b5e537135b73f@sole.redistogo.com:9660/
+```
+## 7. Configure Medusa
+
+#### Update `medusa-config.js`
+
+Set `REDIS_URL` to get `REDISTOGO_URL` environment variable
+```javascript=
+// Medusa uses Redis, so this needs configuration as well
+const REDIS_URL = process.env.REDISTOGO_URL || "redis://localhost:6379";
+```
+
+Set `module.export` like this:
+```javascript=
+module.exports = {
+  projectConfig: {
+    redis_url: REDIS_URL,
+    database_url: DATABASE_URL,
+    database_type: "postgres",
+    store_cors: STORE_CORS,
+    admin_cors: ADMIN_CORS,
+    database_extra: {
+            ssl: { rejectUnauthorized: false },
+    }
+  },
+  plugins,
+};
+```
+
+#### Update `package.json`
+
+set `.scripts` like this:
+
+```json=
+"scripts": {
+    "serve": "medusa start",
+    "start": "medusa develop",
+    "heroku-postbuild": "medusa migrations run",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "build": "babel src -d dist --extensions \".ts,.js\""
+  }
+```
+
+## 8. Build the project
+
+```shell=
+npm install cross-env babel-preset-medusa-package
+```
+
+## 9. Push changes to Heroku
+```shell=
+git add .
+git commit -m "Deploy Medusa App on Heroku"
+heroku buildpacks:set heroku/nodejs
+git push heroku HEAD:master
+```
+
+## 10. Check Heroku build logs
+
+```shell=
+heroku logs -n 500000 --remote heroku --tail
+```
+
+## Appendix and FAQ
 
 Visit [docs.medusa-commerce.com](https://docs.medusa-comerce.com) for further guides.
 
@@ -82,3 +210,10 @@ Visit [docs.medusa-commerce.com](https://docs.medusa-comerce.com) for further gu
     Docs
   </a>
 </p>
+
+
+:::info
+**Find this document incomplete?** Leave a comment!
+:::
+
+###### tags: `MedusaJS` `Heroku` `Documentation`
